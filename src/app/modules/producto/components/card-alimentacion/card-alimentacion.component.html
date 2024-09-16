@@ -1,0 +1,43 @@
+<!-- Card para mostrar TODOS los productos que el admin ingrese a la base de datos -->
+<div class="contenido" *ngFor="let producto of coleccionAlimentacion">
+    <div class="card" style="width: 18rem;">
+        <img src="{{producto.imagen}}" class="card-img-top" alt="{{producto.alt}}">
+
+        <div class="card-body">
+            <h5 class="card-title">{{producto.imagen}}</h5>
+            <p class="card-text">{{producto.precio}}</p>
+
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" 
+            data-bs-target="#verMas" (click)="mostrarVer(producto)">Ver más</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver más información -->
+<div class="modal fade" *ngIf="modalVisible" id="verMas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{productoSeleccionado.nombre}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <img src="{{productoSeleccionado.imagen}}" alt="{{productoSeleccionado.alt}}">
+
+                <div class="mb-3">
+                    {{productoSeleccionado.descripcion}}
+                </div>
+
+                <div class="mb-3">
+                    {{productoSeleccionado.precio}}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Agregar al carrito</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

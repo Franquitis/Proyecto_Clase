@@ -1,0 +1,45 @@
+<mat-toolbar>
+  <!-- Menú desplegable para cuando la pantalla sea menor a 700px -->
+  <button id="menuSecciones" mat-icon-button class="example-icon" [matMenuTriggerFor]="seccion">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #seccion="matMenu">
+    <button mat-menu-item routerLink="/inicio">Inicio</button>
+    <button mat-menu-item [matMenuTriggerFor]="producto">Productos</button>
+  </mat-menu>
+
+  <span>My App</span>
+
+  <!-- Se van a mostrar cuando la pantalla sea mayor a 700px -->
+  <!-- Botón para la vista de Inicio -->
+  <button id="menuInicio" mat-button routerLink="/inicio">Inicio</button>
+
+  <!-- Menu desplegable -> PRODUCTOS -->
+  <button id="menuProducto" mat-button [matMenuTriggerFor]="producto">Productos</button>
+  <mat-menu #producto="matMenu">
+    <button mat-menu-item routerLink="/producto">General</button>
+    <button mat-menu-item routerLink="/alimentacion">Alimentación</button>
+    <button mat-menu-item routerLink="/indumentaria">Indumentaria</button>
+    <button mat-menu-item routerLink="/juguetes">Juguetes</button>
+  </mat-menu>
+
+  <span class="example-spacer"></span>
+
+  <!-- Menú desplegable para manejar todo el acceso de los usuarios en la página -->
+  <button mat-icon-button [matMenuTriggerFor]="usuario"><mat-icon>person</mat-icon></button>
+  <mat-menu #usuario="matMenu">
+    <button mat-menu-item (click)="ingresar()" *ngIf="logueado" routerLink="/registro">Registrarse</button>
+    <button mat-menu-item (click)="ingresar()" *ngIf="logueado" routerLink="/inicio-sesion">Iniciar Sesión</button>
+    <button mat-menu-item (click)="cerrarSesion()" *ngIf="deslogueado">Cerrar Sesión</button>
+  </mat-menu>
+
+  <!-- Carrito -->
+  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+  <!--Label Para Modo Oscuro-->
+  <label for="toggle" id="label_toggle"><i class="fa-solid fa-moon"></i></label>
+  <input type="checkbox" id="toggle" (click)="cambiarFondo()">
+
+</mat-toolbar>
