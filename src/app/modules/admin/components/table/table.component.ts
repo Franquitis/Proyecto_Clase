@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Producto } from 'src/app/models/producto';
 import { CrudService } from '../../services/crud.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 
 @Component({
   selector: 'app-table',
@@ -113,7 +114,7 @@ export class TableComponent {
   }
 
   borrarProducto() {
-    this.servicioCrud.eliminarProducto(this.productoSeleccionado.idProducto)
+    this.servicioCrud.eliminarProducto(this.productoSeleccionado.idProducto, this.productoSeleccionado.imagen)
       .then(respuesta => {
         alert("Se ha podido eliminar con éxito.");
       })
@@ -135,7 +136,7 @@ export class TableComponent {
       precio: productoSeleccionado.precio,
       descripcion: productoSeleccionado.descripcion,
       categoria: productoSeleccionado.categoria,
-      imagen: productoSeleccionado.imagen,
+      //imagen: productoSeleccionado.imagen,
       alt: productoSeleccionado.alt
     })
   }
@@ -151,10 +152,38 @@ export class TableComponent {
       precio: this.producto.value.precio!,
       descripcion: this.producto.value.descripcion!,
       categoria: this.producto.value.categoria!,
-      imagen: this.producto.value.imagen!,
+      imagen: this.productoSeleccionado.imagen,
       alt: this.producto.value.alt!
     }
 
+    //Verificamos si el usuario ingresa una nueva imagen
+    if (this.imagen) {
+      this.servicioCrud.subirImagen(this.nombreImagen, this.imagen, "producto")
+        .then(resp => {
+          this.servicioCrud.ObtenerUrlImagen(resp)
+            .then(url => {
+              datos.imagen = url; //Actualizamos URl de la imagen en los datos del formulario
+
+              this.actualizarProducto(datos); //Actualizamos los datos
+
+              this.producto.reset(); //Vaciar las casillas del formulario
+            })
+            .catch(error => {
+              alert("Hubo un problema al subir la imagen" + error);
+
+              this.producto.reset();
+            })
+        })
+    } else {
+      this.actualizarProducto(datos);  
+       }
+
+
+  }
+
+
+  //ACTUALIZAR la informacion ya existente de los productos
+  actualizarProducto(datos: Producto) {
     // Enviamos al método el id del producto seleccionado y los datos actualizados
     this.servicioCrud.modificarProducto(this.productoSeleccionado.idProducto, datos)
       .then(producto => {
